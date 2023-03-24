@@ -14,6 +14,22 @@ class BangunDatar {
   luas() {
     console.log("Membuat Luas Bangun Datar");
   }
+
+  static compareKelilingTerbesar(bangunA, bangunB) {
+    return bangunB.keliling() - bangunA.keliling();
+  }
+
+  static compareKelilingTerkecil(bangunA, bangunB) {
+    return bangunA.keliling() - bangunB.keliling();
+  }
+
+  static compareLuasTerbesar(bangunA, bangunB) {
+    return bangunB.luas() - bangunA.luas();
+  }
+
+  static compareLuasTerkecil(bangunA, bangunB) {
+    return bangunA.luas() - bangunB.luas();
+  }
 }
 
 // 1. Persegi
@@ -225,11 +241,11 @@ class SegitigaSikuSiku extends Segitiga(BangunDatar) {
     let { tinggi, alas } = props;
     this.tinggi = tinggi;
     this.alas = alas;
-    this.sisiMiring = Math.sqrt(alas * alas + tinggi * tinggi);
+    this._sisiMiring = Math.sqrt(alas * alas + tinggi * tinggi);
   }
 
   keliling() {
-    return this.alas + this.tinggi + this.sisiMiring;
+    return this.alas + this.tinggi + this._sisiMiring;
   }
 }
 
@@ -244,11 +260,11 @@ class SegitigaSamaKaki extends Segitiga(BangunDatar) {
     let { tinggi, alas, sisiYgSama } = props;
     this.tinggi = tinggi;
     this.alas = alas;
-    this.sisiYgSama = sisiYgSama;
+    this._sisiYgSama = sisiYgSama;
   }
 
   keliling() {
-    return 2 * this.sisiYgSama + this.alas;
+    return 2 * this._sisiYgSama + this.alas;
   }
 }
 
@@ -406,8 +422,8 @@ const segitigaSembarang = new SegitigaSembarang({
   sisiC: 12,
 });
 console.log(segitigaSembarang);
-console.log(segitigaSembarang.keliling());
-console.log(segitigaSembarang.luas(), "\n");
+console.log("Keliling Segitiga Sembarang:  ", segitigaSembarang.keliling());
+console.log("Luas Segitiga Sembarang:  ", segitigaSembarang.luas(), "\n");
 
 /*--------------Membuat Object*/
 const segitigaSisi = new SegitigaSamaSisi({
@@ -459,3 +475,61 @@ const layangLayang = new LayangLayang({
 console.log(layangLayang);
 console.log("Keliling Layang-Layang: ", layangLayang.keliling());
 console.log("Luas Layang-Layang: ", layangLayang.luas(), "\n");
+
+/*--------------Compare Object Data*/
+let dataPersegi = [
+  new Persegi({
+    sisi: 6,
+  }),
+  new Persegi({
+    sisi: 5,
+  }),
+];
+
+let dataBangunDatar = [
+  new Persegi({
+    sisi: 6,
+  }),
+  new PersegiPanjang({
+    panjang: 10,
+    lebar: 5,
+  }),
+  new SegitigaSamaSisi({
+    tinggi: 10,
+    alas: 9,
+  }),
+  new Lingkaran({
+    jariJari: 14,
+  }),
+];
+
+let kelilingPersegiTerbesar = [...dataPersegi].sort(
+  Persegi.compareKelilingTerbesar
+);
+let kelilingPersegiTerkecil = [...dataPersegi].sort(
+  Persegi.compareKelilingTerkecil
+);
+
+let bangunDatarLuasTerbesar = [...dataBangunDatar].sort(
+  BangunDatar.compareLuasTerbesar
+);
+let bangunDatarLuasTerkecil = [...dataBangunDatar].sort(
+  BangunDatar.compareLuasTerkecil
+);
+
+console.log(
+  "Persegi dengan Keliling Terkecil:\n",
+  kelilingPersegiTerkecil,
+  "\n"
+);
+console.log(
+  "Persegi dengan Keliling Terbesar:\n",
+  kelilingPersegiTerbesar,
+  "\n"
+);
+console.log(
+  "Bangun Datar dengan Luas Terkecil:\n",
+  bangunDatarLuasTerkecil,
+  "\n"
+);
+console.log("Bangun Datar Luas Terbesar:\n", bangunDatarLuasTerbesar, "\n");
