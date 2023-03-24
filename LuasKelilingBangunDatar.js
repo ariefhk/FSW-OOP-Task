@@ -84,28 +84,81 @@ class Lingkaran extends BangunDatar {
 }
 
 // 4. Trapesium
-// Keliling :
-// Luas :
-class Trapesium extends BangunDatar {
+// Trapesium Mixin
+const Trapesium = (Base) =>
+  class extends Base {
+    luas() {
+      return 0.5 * (this.alasA + this.alasB) * this.tinggi;
+    }
+  };
+
+//Trapesium Siku
+class TrapesiumSiku extends Trapesium(BangunDatar) {
   constructor(props) {
     super(props);
-    let { sisiAtas, sisiBawah, tinggi } = props;
-    this.sisiAtas = sisiAtas;
-    this.sisiBawah = sisiBawah;
+
+    const { panjangAlasAKecil, alasB, tinggi } = props;
+    this.alasA = alasB + panjangAlasAKecil;
+    this.alasB = alasB;
     this.tinggi = tinggi;
-    this.sisiMiring1 = Math.sqrt(
-      ((sisiBawah - sisiAtas) / 2) ** 2 + tinggi ** 2
+    this._sisiMiring = Math.sqrt(
+      tinggi * tinggi + panjangAlasAKecil * panjangAlasAKecil
     );
-    this.sisiMiring2 = Math.sqrt(
-      ((sisiBawah + sisiAtas) / 2) ** 2 + tinggi ** 2
-    );
-  }
-  keliling() {
-    return this.sisiAtas + this.sisiBawah + this.sisiMiring1 + this.sisiMiring2;
   }
 
-  luas() {
-    return ((this.sisiAtas + this.sisiBawah) / 2) * this.tinggi;
+  keliling() {
+    return this.alasA + this.alasB + this.tinggi + this._sisiMiring;
+  }
+}
+
+class TrapesiumSamaKaki extends Trapesium(BangunDatar) {
+  constructor(props) {
+    super(props);
+
+    const { panjangAlasAKecil, alasB, tinggi } = props;
+    this.alasA = 2 * panjangAlasAKecil + alasB;
+    this.alasB = alasB;
+    this.tinggi = tinggi;
+    this._sisiMiring = Math.sqrt(
+      tinggi * tinggi + panjangAlasAKecil * panjangAlasAKecil
+    );
+  }
+
+  keliling() {
+    return (
+      this.alasA +
+      this.alasB +
+      this.tinggi +
+      this._sisiMiring +
+      this._sisiMiring
+    );
+  }
+}
+
+class TrapesiumSembarang extends Trapesium(BangunDatar) {
+  constructor(props) {
+    super(props);
+
+    const { panjangAlasAKiri, panjangAlasAKanan, alasB, tinggi } = props;
+    this.alasA = panjangAlasAKiri + alasB + panjangAlasAKanan;
+    this.alasB = alasB;
+    this.tinggi = tinggi;
+    this._sisiMiringKiri = Math.sqrt(
+      tinggi * tinggi + panjangAlasAKiri * panjangAlasAKiri
+    );
+    this._sisiMiringKanan = Math.sqrt(
+      tinggi * tinggi + panjangAlasAKanan * panjangAlasAKanan
+    );
+  }
+
+  keliling() {
+    return (
+      this.alasA +
+      this.alasB +
+      this.tinggi +
+      this._sisiMiringKiri +
+      this._sisiMiringKanan
+    );
   }
 }
 
@@ -199,6 +252,33 @@ class SegitigaSamaKaki extends Segitiga(BangunDatar) {
   }
 }
 
+class SegitigaSembarang extends Segitiga(BangunDatar) {
+  constructor(props) {
+    super(props);
+
+    let { sisiA, sisiB, sisiC } = props;
+    this.sisiA = sisiA;
+    this.sisiB = sisiB;
+    this.sisiC = sisiC;
+    // S = a + b + c / 2 = (10 + 14 + 12) / 2 = 18 cm
+    this._semiPerimeter = (sisiA + sisiB + sisiC) / 2;
+  }
+
+  keliling() {
+    return this.sisiA + this.sisiB + this.sisiC;
+  }
+
+  luas() {
+    // Luas = √s(s−a)(s−b)(s−c)
+    return Math.sqrt(
+      this._semiPerimeter *
+        (this._semiPerimeter - this.sisiA) *
+        (this._semiPerimeter - this.sisiB) *
+        (this._semiPerimeter - this.sisiC)
+    );
+  }
+}
+
 // 7. Belah Ketupat
 //Menentukan Sisi dengan Diagonal Dalam
 // Keliling : 4 * sisi
@@ -279,14 +359,35 @@ console.log("Keliling Lingkaran: ", lingkaran.keliling());
 console.log("Luas Lingkaran: ", lingkaran.luas(), "\n");
 
 /*--------------Membuat Object*/
-const trapesium = new Trapesium({
-  sisiAtas: 3,
-  sisiBawah: 6,
+const trapesiumSamaKaki = new TrapesiumSamaKaki({
+  panjangAlasAKecil: 3,
+  alasB: 8,
   tinggi: 4,
 });
-console.log(trapesium);
-console.log("Keliling Trapesium: ", trapesium.keliling());
-console.log("Luas Trapesium: ", trapesium.luas(), "\n");
+console.log(trapesiumSamaKaki);
+console.log("Keliling Trapesium Sama Kaki: ", trapesiumSamaKaki.keliling());
+console.log("Luas Trapesium Sama Kaki: ", trapesiumSamaKaki.luas(), "\n");
+
+/*--------------Membuat Object*/
+const trapesiumSiku = new TrapesiumSiku({
+  panjangAlasAKecil: 3,
+  alasB: 3,
+  tinggi: 4,
+});
+console.log(trapesiumSiku);
+console.log("Keliling Trapesium Siku: ", trapesiumSiku.keliling());
+console.log("Luas Trapesium Siku: ", trapesiumSiku.luas(), "\n");
+
+/*--------------Membuat Object*/
+const trapesiumSembarang = new TrapesiumSembarang({
+  panjangAlasAKiri: 3,
+  panjangAlasAKanan: 5,
+  alasB: 8,
+  tinggi: 5,
+});
+console.log(trapesiumSembarang);
+console.log("Keliling Trapesium Sembarang: ", trapesiumSembarang.keliling());
+console.log("Luas Trapesium Sembarang: ", trapesiumSembarang.luas(), "\n");
 
 /*--------------Membuat Object*/
 const jajarGenjang = new JajarGenjang({
@@ -299,20 +400,20 @@ console.log("Keliling JajarGenjang: ", jajarGenjang.keliling());
 console.log("Luas JajarGenjang: ", jajarGenjang.luas(), "\n");
 
 /*--------------Membuat Object*/
-// const segitiga = new Segitiga({
-//   alas: 4,
-//   tinggi: 6,
-// });
-// console.log(segitiga);
-// console.log(segitiga.keliling());
-// console.log(segitiga.luas(), "\n");
+const segitigaSembarang = new SegitigaSembarang({
+  sisiA: 10,
+  sisiB: 14,
+  sisiC: 12,
+});
+console.log(segitigaSembarang);
+console.log(segitigaSembarang.keliling());
+console.log(segitigaSembarang.luas(), "\n");
 
 /*--------------Membuat Object*/
 const segitigaSisi = new SegitigaSamaSisi({
   tinggi: 10,
   alas: 9,
 });
-4;
 console.log(segitigaSisi);
 console.log("Keliling Segitiga Sama Sisi: ", segitigaSisi.keliling());
 console.log("Luas Segitiga Sama Sisi: ", segitigaSisi.luas(), "\n");
