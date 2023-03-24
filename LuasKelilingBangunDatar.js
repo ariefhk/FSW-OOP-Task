@@ -81,6 +81,8 @@ class PersegiPanjang extends BangunDatar {
 // Keliling : 2 * PI * jari"
 // Luas : Pi * r^2
 class Lingkaran extends BangunDatar {
+  #phi = Math.PI;
+
   constructor(props) {
     super(props);
 
@@ -90,12 +92,12 @@ class Lingkaran extends BangunDatar {
 
   //Override
   keliling() {
-    return 2 * Math.PI * this.jariJari;
+    return 2 * this.#phi * this.jariJari;
   }
 
   //Override
   luas() {
-    return Math.PI * this.jariJari ** 2;
+    return this.#phi * this.jariJari ** 2;
   }
 }
 
@@ -350,6 +352,14 @@ class LayangLayang extends BangunDatar {
 }
 
 /*--------------Membuat Object*/
+try {
+  const bangunDatar = new BangunDatar();
+  console.log(bangunDatar);
+} catch (error) {
+  console.log(error.message);
+}
+
+/*--------------Membuat Object*/
 const persegi = new Persegi({
   sisi: 5,
 });
@@ -533,3 +543,32 @@ console.log(
   "\n"
 );
 console.log("Bangun Datar Luas Terbesar:\n", bangunDatarLuasTerbesar, "\n");
+
+console.log("Nilai yang dibandingkan: ");
+console.log(
+  "Persegi->",
+  new Persegi({
+    sisi: 6,
+  }).luas()
+);
+
+console.log(
+  "Persegi Panjang->",
+  new PersegiPanjang({
+    panjang: 10,
+    lebar: 5,
+  }).luas()
+);
+console.log(
+  "Segitiga Sama Sisi->",
+  new SegitigaSamaSisi({
+    tinggi: 10,
+    alas: 9,
+  }).luas()
+);
+console.log(
+  "Lingkaran->",
+  new Lingkaran({
+    jariJari: 14,
+  }).luas()
+);
