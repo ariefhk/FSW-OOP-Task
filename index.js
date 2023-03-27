@@ -155,11 +155,11 @@ console.log("Luas Trapesium Sembarang: ", trapesiumSembarang.luas(), "\n");
 
 /*--------------Membuat Object*/
 const trapesiumSiku = new TrapesiumSiku({
-  panjangAlasAKecil: 3,
+  // panjangAlasAKecil: 3,
   alasA: 7,
   alasB: 4,
   tinggi: 4,
-  // sisiMiring: 5,
+  sisiMiring: 5,
 });
 console.log(trapesiumSiku);
 console.log("Keliling Trapesium Siku: ", trapesiumSiku.keliling());

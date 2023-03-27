@@ -25,11 +25,14 @@ class TrapesiumSiku extends Trapesium(BangunDatar) {
     if (alasA !== null && alasA < alasB) {
       return new Error("alasA harus lebih besar dari alasB");
     }
+    if (!alasA && !panjangAlasAKecil) {
+      return new Error("Panjang Alas A Kecil harus diiputkan!");
+    }
     if (!sisiMiring && !panjangAlasAKecil) {
       return new Error("Panjang Alas A Kecil Harus ditentukan!");
     }
 
-    this.alasA = alasA || 2 * panjangAlasAKecil + alasB;
+    this.alasA = alasA || panjangAlasAKecil + alasB;
     this.alasB = alasB;
     this.tinggi = tinggi;
     this.sisiMiring = sisiMiring || this.getSisiMiring(panjangAlasAKecil);
