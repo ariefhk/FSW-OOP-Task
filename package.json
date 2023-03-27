@@ -1,0 +1,20 @@
+{
+  "name": "fsw-oop-task",
+  "version": "1.0.0",
+  "description": "### Mencari Luas dan Keliling Bangun Datar dengan OOP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariefhk/FSW-OOP-Task.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ariefhk/FSW-OOP-Task/issues"
+  },
+  "homepage": "https://github.com/ariefhk/FSW-OOP-Task#readme"
+}
